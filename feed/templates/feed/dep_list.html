@@ -1,0 +1,31 @@
+
+
+<div class="row">
+    <div class="col-md-7">
+        <ul class="nav">
+            <li class="nav-item">
+                <strong><a class="nav-link active" aria-current="page" href="/">Latest</a></strong> 
+            </li>
+            {% for dl in dep_list %}
+            <li class="nav-item">
+             <strong>  <a class="nav-link active" aria-current="page" href="{{ dl.get_absolute_url}}">{{dl.name}}</a></strong> 
+            </li>
+            {% endfor %}
+            
+        </ul>
+    </div>
+    <div class="col-md-5 ">        
+        {% if s_form %}
+        <form method="post" action="/">
+          {% csrf_token %}
+          <div class="search">
+            {{s_form.s_department}}
+          {{s_form.s_email}}
+          
+          <button type="submit" class="btn btn-success sbmt"><i class="bi bi-plus-square-fill"></i></button>
+          
+        </div>
+        </form>
+        {% endif %}
+    </div>
+</div>

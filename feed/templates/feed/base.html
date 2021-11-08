@@ -1,0 +1,105 @@
+{% load static %}
+<!--topStart-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% block title %}<title>{{site.site_meta}} || {{site.slogan}}</title>{% endblock %}
+  {% block meta_des %}<meta name="description" content="{{site.site_description}}" />{% endblock %}
+  {% block name %} <meta name="keywords" content="{{site.site_meta_tag}}">{% endblock %}
+  {% block twi_title %}<meta name="twitter:title" content="{{site.site_meta}}" />{% endblock %}
+  {% block twi_card %}<meta name="twitter:card" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block og_des %}<meta property="og:description" content="{{site.site_description}}" />{% endblock %}
+  {% block og_image %}<meta property="og:image" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block og_title %}<meta property="og:title" content="{{site.site_meta}}" />{% endblock %}
+  {% block twi_image %}<meta name="twitter:image" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block twi_des %}<meta name="twitter:description" content="{{site.site_description}}" />{% endblock %} 
+  <meta property="og:type" content="website" />
+
+  <link rel="shortcut icon" type="image/png" href="{% static site.site_favicon.url %}"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar sticky-top navbar-light bg-light">
+    <div class="container">
+
+      <div class="d-flex">
+      <button type="button" class="navbar-toggler d-block d-md-none" data-bs-toggle="modal" data-bs-target="#mobileMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="logo" > <a href="/" class="navbar-brand"> <img src="{% static site.site_logo.url %}" class="img-responsive" alt="{{site.site_meta}}" /></a></div>
+    </div>
+
+      <form class="d-flex input-group w-auto" method="GET" , action="{% url 'feed:search' %}">
+        <input type="text" name="query" id="query" class="form-control" value="{{value}}" placeholder="Search" required>
+        <button type="submit" class="btn btn-success sbmt"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    {% if messages %}
+    <div class="alert alert-primary" role="alert">
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <!-- Modal -->
+  <div class="modal fade modal-sm" id="mobileMenu" tabindex="-1" aria-labelledby="mobileMenuLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mobileMenuLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% include "feed/left_sidebar.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--topEnd-->
+
+
+<div class="container">
+    <div class="row">
+        <!--left sidebar-->
+        {% block leftsidebar %}
+        <div class="col-md-3 d-none d-md-block">
+            {% include "feed/left_sidebar.html" %}
+        </div>
+        {% endblock %}
+
+        <!--midel content-->
+        <div class="col-lg-6 col-md-9 mt-3 col-sm-12">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <!--right sidebar-->
+        {% block rightsidebar %}
+        <div class="col-lg-3 d-none d-lg-block">
+            {% include "feed/right_sidebar.html" %}
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% include "feed/bottom.html" %}

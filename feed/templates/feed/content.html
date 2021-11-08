@@ -1,0 +1,23 @@
+{% include "feed/dep_list.html" %}
+
+{% include "feed/slideshow.html" %}
+
+{% for par in parsed %}
+<div class="feed card mb-3">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{{par.link}}" target="_blank" class="open{{par.id}}">{{par.title}}</a></h5>
+        <p class="card-text">
+            {{par.description}} <small class="text-muted">({{par.pubdate}})</small>            
+        </p>
+        <div class="card-text navbar">
+            <div class="container">
+            <span class="text-muted d-flex">{{par.created}}</span>
+            <span class="text-muted d-flex">{{par.feeder.category}}</span>
+        </div>
+        
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% include "feed/pagination.html" %}

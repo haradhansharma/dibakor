@@ -1,0 +1,62 @@
+<!-- Remove the container if you want to extend the Footer to full width. -->
+<!-- <div class="container my-5"> -->
+
+    <!-- Footer -->
+  <footer class="bg-dark text-center text-white">
+    <!-- Grid container -->
+    <div class="container p-4">
+      
+  
+      <!-- Section: Form -->
+      <section class="">
+        {% if s_form %}
+        <form method="post" action="/">
+          {% csrf_token %}
+      
+          <div class="row d-flex justify-content-center"> 
+            
+              <p class="pt-2">
+                <strong>Sign up for our newsletter</strong>
+              </p>             
+              <p class="col-md-6 d-flex">
+                {{s_form.s_department}}
+              {{s_form.s_email}}
+              <input type="submit" value="Submit" class="btn btn-success">
+              </p>
+            
+          </div>
+        </form>
+          {% endif %}
+      </section>
+      <!-- Section: Form -->
+  
+      <!-- Section: Text -->
+      <section class="mb-4">
+        <p>
+          <strong>dibakor</strong> - an informative platform for coder and fashion designer. It fetch News, Jobs and Videos everyday from internet. 
+        </p>
+        <p>
+          Build on <strong>django--</strong> The <strong>opensource </strong> framework of <strong>python.</strong>
+        </p>
+        <p>Developed and designed by <strong><a href="https://hrdnsh.com" target="_blank">Haradhan Sharma</a></strong></p>
+        <p><i class="bi bi-diagram-3-fill" style="color: aqua;"></i></p>
+      </section>
+      <!-- Section: Text -->
+  
+     
+    </div>
+    <!-- Grid container -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2022 Copyright: 
+      <a class="text-white" href="https://hrdnsh.com/">hrdnsh.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+    
+  <!-- </div> -->
+  <!-- End of .container -->
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "feed/base.html" %}
+{% load static %}
+
+
+  {% block title %}<title>{{site.site_meta}} || {{meta_title}}</title>{% endblock %}
+  {% block meta_des %}<meta name="description" content="{{site.site_description}}" />{% endblock %}
+  {% block name %} <meta name="keywords" content="{{site.site_meta_tag}}"/>{% endblock %}
+  {% block twi_title %}<meta name="twitter:title" content="{{meta_title}}" />{% endblock %}
+  {% block twi_card %}<meta name="twitter:card" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block og_des %}<meta property="og:description" content="{{site.site_description}}" />{% endblock %}
+  {% block og_image %}<meta property="og:image" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block og_title %}<meta property="og:title" content="{{meta_title}}" />{% endblock %}
+  {% block twi_image %}<meta name="twitter:image" content="{% static site.og_image.url %}" />{% endblock %}
+  {% block twi_des %}<meta name="twitter:description" content="{{site.site_description}}" />{% endblock %}
+
+
+
+{% block content %}
+{% include "feed/dep_list.html" %}
+
+{% include "feed/slideshow.html" %}
+<ul class="feed">
+{% for par in parsed %}
+<li><a href="{{par.link}}" target="_blank">( <i>{{par.feeder.category}}</i> ){{par.title}}- <i>Published:</i>  {{par.pubdate}}- <i>Fetched:</i>  {{par.created}}</a></li>
+{% endfor %}
+</ul>
+
+{% include "feed/pagination.html" %}
+{% endblock %}
