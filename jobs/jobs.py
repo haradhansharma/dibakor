@@ -24,9 +24,9 @@ def schedule_api():
                 soup = BeautifulSoup(feed_response.content, 'xml')            
                 items = []
                 if soup.find_all('item'):
-                    items = soup.find_all('item')[:5]
+                    items = soup.find_all('item')[:25]
                 elif soup.find_all('entry'):
-                    items = soup.find_all('entry')[:5]
+                    items = soup.find_all('entry')[:25]
                 else:
                     pass
                 
@@ -45,7 +45,7 @@ def schedule_api():
                 soup = feedparser.parse(parser_url)
                 items = []
                 if soup.entries:
-                    items = soup.entries[:5] 
+                    items = soup.entries[:25] 
                 else:
                     pass   
                 
@@ -66,7 +66,7 @@ def schedule_api():
             soup = feedparser.parse(parser_url)            
             items = []
             if soup.entries:
-                items = soup.entries[:5] 
+                items = soup.entries[:25] 
             else:
                 pass
             
