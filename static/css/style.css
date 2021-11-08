@@ -1,0 +1,91 @@
+.feed a {
+    
+    text-decoration: none;
+    color: #0396A6;
+}
+
+.pars .btn-light {   
+    margin: 5px;
+}
+.bg-light {
+    background-color: #0396A6!important;
+}
+.bg-dark {
+    background-color: #0396A6!important;
+}
+
+.btn-success {
+    color: #A0EAF2;
+    background-color: #057075;
+    border-color: #057075;
+}
+.btn-success:hover, .btn-success:active, .btn-success:visited {
+    color: #A0EAF2;
+    background-color: #022B2D;
+    border-color: #022B2D;
+}
+
+.nav-link {   
+    color: #0396A6;
+}
+
+.info a {
+    padding: 5px;
+    color: #E8CF91;
+}
+body {    
+    background-color: #EBEDED;    
+}
+.page-link {    
+    color: #0396A6;    
+}
+@media (min-width: 768px) {
+    .frev {
+        flex-direction: row-reverse;
+    }
+    
+    }
+
+.search {
+    display: flex;
+}
+.search .form-select {
+    width:40%;
+    padding: 0.375rem 1.25rem  0.375rem 0.75rem;
+}
+.sform {
+    border-radius: 5px 0px 0px 5px;
+}
+
+.sbmt {
+    margin-left: -35px;
+    display: revert;
+    border-radius: 0 5px 5px 0;
+}
+.card-body .bi {
+    font-size: 25px;
+    padding: 10px;
+}
+.carousel-inner{
+border: 1px solid rgba(0,0,0,.125);
+border-radius: 0.25rem;
+}
+#mobileMenu .modal-dialog {    
+    margin: 0!important;
+}
+.modal-dialog-scrollable {
+    height: 100%!important;
+}
+
+@media (max-width: 576px) {
+#mobileMenu .modal-dialog {
+    max-width: 75%!important;
+    margin: 0!important;
+}
+}
+
+@media (min-width: 576px){
+/* .modal-dialog-scrollable {
+    height: calc(100% - 0rem);
+} */
+}
