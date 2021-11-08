@@ -120,11 +120,7 @@ def schedule_api_newsletter():
                 message += f'<li><a style="font-weight: bold;text-decoration: none; color:#0396A6;" href="{f.link}"> {f.title}-{f.created} </a> <p style="color: lightslategray;"> {f.description}</p></li>' 
             message += f'</ul></div><p>Best Regards </p><br><p>{ExSite.on_site.all()[0].site_meta}</p><p>{domain}</p>'    
             message += f'<div style="color:white; font-size:10px; text-align:center; display:block;width:400px;padding:5px;margin:0 auto!important;">Don\'t like these emails?<a href="{domain}/delete/?email={to_email}&conf_num={conf_num}">Unsubscribe</a></div></div>'            
-            
-            
-           
-            
-            
+                   
             
             with mail.get_connection(host=host, port=port,username=userkey,password=passkey) as connection:
                 try:
