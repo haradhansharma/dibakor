@@ -1,4 +1,3 @@
-
 from feedparser import exceptions
 import requests
 from bs4 import BeautifulSoup
@@ -8,7 +7,6 @@ from feed.models import *
 import feedparser
 import datetime
 from django.contrib.sites.models import Site
-from django.utils.html import format_html
 
 
 def schedule_api():  
