@@ -80,13 +80,37 @@ def department_details(request, slug):
     
     return render(request, 'feed/dep_detail.html', context=context) 
 
+def search_rec(request, pk):
+    
+    sr = get_object_or_404(SearchRecord, id = pk)
+    query = sr.term
+    parse_data = ParsedData.objects.order_by('-pk').filter(Q(title__icontains=query)|Q(description__icontains = query))
+    paginator = Paginator(parse_data, ExSite.on_site.all()[0].pagination_para)
+    page_number = request.GET.get('page')
+    
+    try:
+        parse_data = paginator.get_page(page_number)
+    except PageNotAnInteger :
+        parse_data = paginator.get_page(1)
+    except EmptyPage:
+        parse_data = paginator.get_page(paginator.num_pages)        
+    
+    context = {
+        'parsed': parse_data,
+        'meta_title': query,  
+        'value':  query,               
+    }
+    return render(request, 'feed/search_rs.html', context)
+    
+
 class Search(View):
     template_name = 'feed/search.html'
     def get(self, request, *args, **kwargs):
         search_form = SearchForm(self.request.GET)        
         if search_form.is_valid():
             query = search_form.cleaned_data['query']            
-            ip = request.META['REMOTE_ADDR'] + '(' + request.META['HTTP_USER_AGENT'] + ')'
+            ip = request.META['REMOTE_ADDR'] + '(' + request.META['HTTP_USER_AGENT'] + ')'            
+           
                         
             sr = SearchRecord(term = query, ip = ip)
             sr.save()
@@ -104,18 +128,14 @@ class Search(View):
             
             context = {
                 'parsed': parse_data,
-                'meta_title': query,                  
+                'meta_title': query,  
+                'value':  query,               
             }
         else:
             return redirect('feed:feed')
         return render(request, self.template_name, context)
     
-def left_sidebar(request):
-    context={
-        
-                
-    }
-    return render(request, 'left_sidebar.html', context)
+
 
 class InformaionDetailView(generic.DetailView):
     model = Informaion

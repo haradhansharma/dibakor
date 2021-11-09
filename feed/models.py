@@ -107,6 +107,12 @@ class SearchRecord(models.Model):
     term = models.CharField(max_length=256)
     ip= models.CharField(max_length=256)
     
+    def __str__(self):
+        return self.term
+    
+    def get_absolute_url(self):        
+        return reverse("feed:search_rec", args=[str(self.id)])
+    
     
 from django.templatetags.static import static
 class Newsletter(models.Model):
@@ -164,7 +170,8 @@ class ExSite(models.Model):
     
     phone = models.CharField(max_length=15)
     email = models.EmailField()
-    last_degree = models.CharField(max_length=256)
+    feed_fetch_time = models.CharField(max_length=2, help_text="Put 0,6,12,18 like that")
+    newsletter_send_time = models.CharField(max_length=2, help_text="Put 0,6,12,18 like that")
     location=models.CharField(max_length=120)
     facebook_link = models.URLField()
     twitter_link = models.URLField()

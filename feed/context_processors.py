@@ -1,27 +1,33 @@
 from django.contrib import messages
 from django.core import mail
 from django.core.mail import BadHeaderError
+from django.db.models.aggregates import Avg
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from feed.models import Subscriber
 from .forms import SubscriberForm
 import random
 from feed.models import *
-from django.db.models import Count
+from django.db.models import Count, Min
+from django.db.models import F
 
 
-def common(request):    
+def common(request): 
+    search_items = SearchRecord.objects.all()
+    search_term_count =  search_items.values('term').annotate(total=Count('term')).order_by('-total')[:50]
+    
+    
+      
     return {   
         'dep_list':Department.objects.all(),
         'pc_list': ParserCategory.objects.all(),
         'slides':SlideShow.objects.all(),
         'info_list': Informaion.objects.all(),
         'parser_list': Parser.objects.all(),
-        'search_terms': SearchRecord.objects.all().values('term').annotate(total=Count('term')).order_by('-total')[:50],
+        'search_terms': search_term_count,
         'rst':Blocks.objects.filter(position__exact = 'rst')[0],
         'lst':Blocks.objects.filter(position__exact = 'lsh')[0],
-        'site':ExSite.on_site.all()[0]      
-        
+        'site':ExSite.on_site.all()[0] 
     }
     
 

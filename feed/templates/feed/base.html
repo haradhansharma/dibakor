@@ -46,7 +46,7 @@
       <div id="logo" > <a href="/" class="navbar-brand"> <img src="{% static site.site_logo.url %}" class="img-responsive" alt="{{site.site_meta}}" /></a></div>
     </div>
 
-      <form class="d-flex input-group w-auto" method="GET" , action="{% url 'feed:search' %}">
+      <form class="d-flex input-group w-auto" method="GET" , action="{% url 'feed:search' %}"> 
         <input type="text" name="query" id="query" class="form-control" value="{{value}}" placeholder="Search" required>
         <button type="submit" class="btn btn-success sbmt"><i class="bi bi-search"></i></button>
       </form>

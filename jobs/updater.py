@@ -8,6 +8,7 @@ from .jobs import schedule_api, schedule_api_newsletter
 import logging
 from apscheduler.executors.pool import ProcessPoolExecutor, ThreadPoolExecutor
 from django.conf import settings
+from feed.models import *
 
 
 
@@ -19,8 +20,8 @@ def start():
         
     scheduler = BackgroundScheduler(settings.SCHEDULER_CONFIG)
     # scheduler.add_jobstore(DjangoJobStore(), "default")
-    scheduler.add_job(schedule_api, 'interval', hours=24, id="schedule_api", name='fetch_data', jobstore='default', replace_existing=True)
-    scheduler.add_job(schedule_api_newsletter, 'interval', seconds=320000, id="schedule_api_newsletter",  name='send_news_letter', jobstore='default', replace_existing=True)  
+    scheduler.add_job(schedule_api, "cron", hour=ExSite.on_site.all()[0].feed_fetch_time, id="schedule_api", name='fetch_data', jobstore='default', replace_existing=True)
+    scheduler.add_job(schedule_api_newsletter, "cron", hour=ExSite.on_site.all()[0].newsletter_send_time, id="schedule_api_newsletter",  name='send_news_letter', jobstore='default', replace_existing=True)  
     register_events(scheduler)  
     scheduler.start()
     

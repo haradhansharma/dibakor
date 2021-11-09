@@ -3,10 +3,14 @@ from django.urls import path
 from . import views
 from django.shortcuts import render 
 from django.views.generic import TemplateView
-from .sitemaps import StaticViewSitemap
+from feed.sitemaps import *
 
 sitemaps = {
     'static': StaticViewSitemap,
+    'dept': DeptSitemap,
+    'parsercategory': ParserCategorySitemap,
+    'parser': ParserSitemap,
+    'info': InformaionSitemap,
 }
 
 app_name = 'feed'
@@ -18,7 +22,7 @@ urlpatterns = [
     path('search/', views.Search.as_view(), name='search'),
     path('category/<slug:slug>', views.pc_detail, name='pc-detail'),
     path('parser/<slug:slug>', views.parserdetailview, name='parser-detail'),
-    path('info/<slug:slug>', views.InformaionDetailView.as_view(), name='information'),
+    path('info/<slug:slug>', views.InformaionDetailView.as_view(), name='information'),    
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
        
 ]
