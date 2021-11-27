@@ -13,6 +13,7 @@ class SlideShow(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     
+    
     def __str__(self):
         return self.title
     
@@ -34,6 +35,7 @@ class Blocks(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=100)  
     slug = models.SlugField(unique=True, null=False, blank=False) 
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):
         return self.name
@@ -46,6 +48,7 @@ class ParserCategory(models.Model):
     name = models.CharField(max_length=100) 
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True) 
     slug = models.SlugField(unique=True, null=False, blank=False) 
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):
         return self.name
@@ -68,6 +71,7 @@ class Parser(models.Model):
     activate = models.BooleanField(default=True)
     ic_color = ColorField(default='#FF0000')
     slug = models.SlugField(unique=True, null=False, blank=False) 
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):
         return self.feed_name
@@ -88,8 +92,9 @@ class ParsedData(models.Model):
     
     def __str__(self):
         return self.title
-    def url(self):
-        return reverse('feed:feed')
+    
+    def get_absolute_url(self):
+        return reverse('feed:feed', args=[str(self.pk)])
     
 class Subscriber(models.Model):
     s_email = models.EmailField(unique=True)
@@ -150,6 +155,7 @@ class Informaion(models.Model):
     name = models.CharField(max_length=256)
     content = models.TextField()
     slug = models.SlugField(unique=True, null=False, blank=False)
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):
         return self.name

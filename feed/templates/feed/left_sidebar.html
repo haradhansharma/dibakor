@@ -2,6 +2,11 @@
 {% block sidebar_left %}
 <div class="card mt-3">
     <img src="{% static lst.pic.url %}" class="card-img-top" alt="{{lst.title}}" />
+    <ul class="list-group list-group-flush feed">
+        {% for pcl in pc_list %}
+        <li class="list-group-item"><a href="{{ pcl.get_absolute_url }}" class="card-link">#{{pcl.name}}</a></li>
+        {% endfor %}
+    </ul>
     <div class="card-body">
         <h5 class="card-title">{{lst.title}}</h5>
         <p class="card-text pars">
@@ -11,18 +16,8 @@
             {% endfor %}
         </p>
     </div>
-    <ul class="list-group list-group-flush feed">
-        {% for pcl in pc_list %}
-        <li class="list-group-item"><a href="{{ pcl.get_absolute_url }}" class="card-link">#{{pcl.name}}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="card-body">
-        <div class="d-flex justify-content-center feed">
-            <a href="{{site.facebook_link}}" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="{{site.twitter_link}}" target="_blank"><i class="bi bi-twitter"></i></a>
-            <a href="{{site.linkedin_link}}" target="_blank"><i class="bi bi-linkedin"></i></a>
-        </div>
-    </div>
+    
+    
 </div>
 
 

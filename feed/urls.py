@@ -11,6 +11,7 @@ sitemaps = {
     'parsercategory': ParserCategorySitemap,
     'parser': ParserSitemap,
     'info': InformaionSitemap,
+    'pdsitemap':PdSitemap
 }
 
 app_name = 'feed'
@@ -22,7 +23,8 @@ urlpatterns = [
     path('search/', views.Search.as_view(), name='search'),
     path('category/<slug:slug>', views.pc_detail, name='pc-detail'),
     path('parser/<slug:slug>', views.parserdetailview, name='parser-detail'),
-    path('info/<slug:slug>', views.InformaionDetailView.as_view(), name='information'),    
+    path('info/<slug:slug>', views.InformaionDetailView.as_view(), name='information'), 
+    path('pd/<str:pk>', views.ParsedDataDetailView.as_view(), name='parseddata'),    
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
        
 ]

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 SITE_ID = 1
 INSTALLED_APPS = [
+    'django_cron',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +43,7 @@ INSTALLED_APPS = [
     'django_feedparser',
     'feed',
     'django.contrib.sites',
-    'colorfield',
-    'django_apscheduler',
+    'colorfield',   
     
 ]
 
@@ -51,7 +51,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -149,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Currently not essential as using from extended site model. but should have a default in future
 DEFAULT_FROM_EMAIL = ''
@@ -159,15 +161,26 @@ EMAIL_HOST_USER=''
 EMAIL_HOST_PASSWORD=''
 EMAIL_USE_TLS=True
 
-# This scheduler config will:
-# - Store jobs in the project database
-# - Execute jobs in threads inside the application process
-SCHEDULER_CONFIG = {
-    "apscheduler.jobstores.default": {
-        "class": "django_apscheduler.jobstores:DjangoJobStore"
-    },
-    'apscheduler.executors.processpool': {
-        "type": "threadpool"
-    },
-}
-SCHEDULER_AUTOSTART = True
+
+CRON_CLASSES = [
+"jobs.updater.ScheduleParse",
+"jobs.updater.SendNewsLatter",
+# 'django_cron.cron.FailedRunsNotificationCronJob',
+]
+
+
+
+
+
+
+
+
+    
+
+
+
+            
+    
+        
+        
+

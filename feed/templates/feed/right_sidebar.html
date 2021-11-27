@@ -1,22 +1,22 @@
 {% load static %}
 {% block sidebar_right %}
 <div class="card mt-3 pb-4">
-
-    <img src="{% static rst.pic.url %}" class="card-img-top" alt="{{rst.title}}" />
+    <img src="{% static rst.pic.url %}" class="card-img-top" alt="{{rst.title}}" />   
+    <div class="card-body">
+        <div class="d-flex justify-content-center feed mt-4">
+            <a href="{{site.facebook_link}}" target="_blank"><i class="bi bi-facebook"></i></a>
+            <a href="{{site.twitter_link}}" target="_blank"><i class="bi bi-twitter"></i></a>
+            <a href="{{site.linkedin_link}}" target="_blank"><i class="bi bi-linkedin"></i></a>
+        </div>
+    </div>
     <div class="card-body">
         <h5 class="card-title">{{rst.title}}</h5>       
     </div>    
-    
    <div class="container">
         {% for search_term in search_terms %}
-        <span class="btn btn-light mt-2">{{search_term.term}}({{search_term.total}})</span>
-        
+        <span class="btn btn-light mt-2">{{search_term.term}}({{search_term.total}})</span>        
     {% endfor %}
 </div>
-    
-        
-    
-    
 </div>
 
 {% endblock %}

@@ -7,85 +7,100 @@ from feed.models import *
 import feedparser
 import datetime
 from django.contrib.sites.models import Site
+from django.utils import timezone
 
 
 def schedule_api():  
-    parser_data = Parser.objects.filter(activate = True)
-    for pd in parser_data:
-        parser_url = pd.feed_url
-        parser_feed = Parser.objects.get(id = pd.id)
-        parser_feed_type = pd.parser_type      
-        
-        if parser_feed_type == 'rss':
-            feed_response = requests.get(parser_url)
-            if feed_response.status_code == 200:
-                soup = BeautifulSoup(feed_response.content, 'xml')            
-                items = []
-                if soup.find_all('item'):
-                    items = soup.find_all('item')[:25]
-                elif soup.find_all('entry'):
-                    items = soup.find_all('entry')[:25]
-                else:
+    try:
+        parser_data = Parser.objects.filter(activate = True)
+        for pd in parser_data:
+            parser_url = pd.feed_url
+            parser_feed = Parser.objects.get(id = pd.id)
+            parser_feed_type = pd.parser_type      
+            
+            if parser_feed_type == 'rss':
+                try:
+                    feed_response = requests.get(parser_url)
+                    if feed_response.status_code == 200:
+                        soup = BeautifulSoup(feed_response.content, features="xml")            
+                        items = []
+                        if soup.find_all('item'):
+                            items = soup.find_all('item')[:25]
+                        elif soup.find_all('entry'):
+                            items = soup.find_all('entry')[:25]
+                        else:
+                            pass
+                      
+                        existing = ParsedData.objects.filter(feeder_id__exact = pd.id)                                 
+                        for item in items:
+                            if  item.find('link').text not in [e.link for e in existing]:
+                                try:              
+                                    title = item.find('title').text if item.find('title').text else ''
+                                    link = item.find('link').text if item.find('link').text else ''                    
+                                    pubdate = item.find('pubDate').text if item.find('pubDate').text else item.find('published').text if item.find('published').text else timezone.now()
+                                    description = item.find('description').text if item.find('description').text else ''           
+                                    
+                                    fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:25])                  
+                                    fetched.save()
+                                except:
+                                    pass
+                    else:            
+                        soup = feedparser.parse(parser_url)
+                        items = []
+                        if soup.entries:
+                            items = soup.entries[:25] 
+                        else:
+                            pass   
+                        
+                        existing = ParsedData.objects.filter(feeder_id__exact = pd.id)                                     
+                        for item in items:  
+                            if  item.link not in [e.link for e in existing]:
+                                try:                  
+                                    title = item.title if item.title else ''                    
+                                    link = item.link if item.link else ''                    
+                                    pubdate = item.published if item.published else timezone.now()
+                                    description = item.summary if item.summary else ''  
+                                    
+                                    fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:25])                      
+                                    fetched.save()  
+                                except:
+                                    pass 
+                except:
+                    pass              
+                        
+            
+            if parser_feed_type == 'youtube':
+                try:
+                    soup = feedparser.parse(parser_url)            
+                    items = []
+                    if soup.entries:
+                        items = soup.entries[:25] 
+                    else:
+                        pass
+                    
+                    existing = ParsedData.objects.filter(feeder_id__exact = pd.id)                      
+                    for item in items:  
+                        if  item.link not in [e.link for e in existing]:  
+                            try:            
+                                title = item.title if item.title else ''                
+                                link = item.link if item.link else ''                
+                                pubdate = item.published if item.published else timezone.now()
+                                description = item.summary if item.summary else ''  
+                                
+                                fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:25])    
+                                fetched.save() 
+                            except:
+                                pass
+                except:
                     pass
                 
-                existing = ParsedData.objects.filter(feeder_id__exact = pd.id)
-                rs = all(elem in items for elem in existing)               
-                if rs:          
-                    for item in items:               
-                        title = item.find('title').text if item.find('title').text else ''
-                        link = item.find('link').text if item.find('link').text else ''                    
-                        pubdate = item.find('pubDate').text if item.find('pubDate').text else item.find('published').text if item.find('published').text else datetime.datetime.now()
-                        description = item.find('description').text if item.find('description').text else ''                        
-                        
-                        fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:100])                  
-                        fetched.save()
-            else:            
-                soup = feedparser.parse(parser_url)
-                items = []
-                if soup.entries:
-                    items = soup.entries[:25] 
-                else:
-                    pass   
-                
-                existing = ParsedData.objects.filter(feeder_id__exact = pd.id) 
-                rs = all(elem in items for elem in existing)               
-                if rs:               
-                    for item in items:                    
-                        title = item.title if item.title else ''                    
-                        link = item.link if item.link else ''                    
-                        pubdate = item.published if item.published else datetime.datetime.now()
-                        description = item.summary if item.summary else ''  
-                        
-                        fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:100])                      
-                        fetched.save()                 
-                    
-        
-        if parser_feed_type == 'youtube':
-            soup = feedparser.parse(parser_url)            
-            items = []
-            if soup.entries:
-                items = soup.entries[:25] 
-            else:
-                pass
             
-            existing = ParsedData.objects.filter(feeder_id__exact = pd.id)
-            rs = all(elem in items for elem in existing)               
-            if rs:  
-                for item in items:                
-                    title = item.title if item.title else ''                
-                    link = item.link if item.link else ''                
-                    pubdate = item.published if item.published else datetime.datetime.now()
-                    description = item.summary if item.summary else ''  
-                    
-                    fetched = ParsedData(feeder=parser_feed, title=title.strip(), link=link.strip(), pubdate=pubdate.strip(), description= description.strip()[:100])    
-                    fetched.save() 
-            
+            if parser_feed_type == 'url':
+                pass  
+    except:
+        pass
         
-        if parser_feed_type == 'url':
-            pass  
-        
-def schedule_api_newsletter():
-    
+def schedule_api_newsletter():    
     # mail parameter
     site_meta= ExSite.on_site.all()[0].site_meta
     site_mail= ExSite.on_site.all()[0].email
@@ -103,7 +118,7 @@ def schedule_api_newsletter():
         subs = Subscriber.objects.filter(s_department = dep.id)
         prcs = ParserCategory.objects.filter(department__in = [sub.s_department for sub in subs])
         prs = Parser.objects.filter(category__in = [prc.id for prc in prcs])
-        pds = ParsedData.objects.filter(feeder__in = [pr.id for pr in prs])
+        pds = ParsedData.objects.filter(feeder__in = [pr.id for pr in prs], created__gt = (timezone.now() - timezone.timedelta(days=1)))
         
         
         for s in subs.iterator():

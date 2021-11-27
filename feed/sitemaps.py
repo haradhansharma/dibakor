@@ -18,6 +18,9 @@ class DeptSitemap(sitemaps.Sitemap):
 
     def items(self):
         return Department.objects.all()    
+    
+    def lastmod(self, obj):
+        return obj.created
         
     def location(self,obj):
         return '/dept/%s' % (obj.slug)
@@ -27,7 +30,10 @@ class ParserCategorySitemap(sitemaps.Sitemap):
     priority = 0.8    
 
     def items(self):
-        return ParserCategory.objects.all()    
+        return ParserCategory.objects.all()  
+    
+    def lastmod(self, obj):
+        return obj.created  
         
     def location(self,obj):
         return '/category/%s' % (obj.slug) 
@@ -37,7 +43,10 @@ class ParserSitemap(sitemaps.Sitemap):
     priority = 0.8    
 
     def items(self):
-        return Parser.objects.all()    
+        return Parser.objects.all()  
+    
+    def lastmod(self, obj):
+        return obj.created  
         
     def location(self,obj):
         return '/parser/%s' % (obj.slug) 
@@ -47,7 +56,23 @@ class InformaionSitemap(sitemaps.Sitemap):
     priority = 0.8    
 
     def items(self):
-        return Informaion.objects.all()    
+        return Informaion.objects.all()  
+    
+    def lastmod(self, obj):
+        return obj.created  
         
     def location(self,obj):
-        return '/info/%s' % (obj.slug)             
+        return '/info/%s' % (obj.slug)         
+    
+class PdSitemap(sitemaps.Sitemap):
+    changefreq = "daily"
+    priority = 0.8    
+
+    def items(self):
+        return ParsedData.objects.all()   
+    
+    def lastmod(self, obj):
+        return obj.created
+        
+    def location(self,obj):
+        return '/pd/%s' % (obj.id)        

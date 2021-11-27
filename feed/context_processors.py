@@ -16,7 +16,7 @@ def common(request):
     search_items = SearchRecord.objects.all()
     search_term_count =  search_items.values('term').annotate(total=Count('term')).order_by('-total')[:50]
     
-    
+     
       
     return {   
         'dep_list':Department.objects.all(),
@@ -102,6 +102,7 @@ def subsform(request):
                     's_form':s_form,                                     
                 }
         return context
+   
              
   
    
